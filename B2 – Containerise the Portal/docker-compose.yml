@@ -1,0 +1,28 @@
+services:
+  portal:
+    build: .
+    image: university-portal:local
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: portal
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: change-this-for-local-testing
+    volumes:
+      - portal_db_data:/var/lib/postgresql/data
+
+volumes:
+  portal_db_data:
